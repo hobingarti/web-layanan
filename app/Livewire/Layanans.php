@@ -3,11 +3,14 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Layanan;
 use App\Models\JenisLayanan;
 
 class Layanans extends Component
 {
+    use WithPagination;
+    
     public $alertTitle = '';
     public $alertMessage = '';
     public $number = 0;
@@ -32,14 +35,10 @@ class Layanans extends Component
 
     public function render()
     {
-        $this->layanans = Layanan::with('jenisLayanan')->get();
+        $this->layanans = Layanan::paginate(10);
         $this->jenisLayanans = JenisLayanan::where('is_aktif', 1)->get();
-        // return view('livewire.layanans', [
-        //     'layanans' => $this->layanans,
-        //     'jenisLayanans' => $this->jenisLayanans,
-        // ]);
 
-        return view('livewire.layanans');
+        return view('livewire.layanans', ['layanans' => $this->layanans, 'jenisLayanans' => $this->jenisLayanans]);
     }
 
     public $confirmingUserDeletion = false;

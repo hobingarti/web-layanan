@@ -125,4 +125,6 @@
             @endforeach
         </tbody>
     </table>
+
+    {{ $layanans->links() }}
 </div>
