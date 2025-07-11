@@ -35,7 +35,7 @@ class Layanans extends Component
 
     public function render()
     {
-        $this->layanans = Layanan::paginate(10);
+        $this->layanans = Layanan::get();
         $this->jenisLayanans = JenisLayanan::where('is_aktif', 1)->get();
 
         return view('livewire.layanans', ['layanans' => $this->layanans, 'jenisLayanans' => $this->jenisLayanans]);

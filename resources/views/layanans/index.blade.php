@@ -1,5 +1,3 @@
 <x-app-layout>
-    <div class="p-6">
-        @livewire('show-layanans')
-    </div>
+    @livewire('show-layanans')
 </x-app-layout>

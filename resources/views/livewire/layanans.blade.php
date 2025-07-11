@@ -126,5 +126,5 @@
         </tbody>
     </table>
 
-    {{ $layanans->links() }}
+    
 </div>
