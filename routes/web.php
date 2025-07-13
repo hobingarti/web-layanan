@@ -6,7 +6,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/layanans', fn () => view('layanans.index'))->middleware(['auth', 'verified']);
+Route::get('/layanans', fn () => view('layanans.index'))->name('layanans.index')->middleware(['auth', 'verified']);
 
 Route::middleware([
     'auth:sanctum',
