@@ -130,50 +130,44 @@ class LayanansByJenis extends Component
         return $rulesWarga;
     }
 
+    public function saveDataWarga()
+    {
+        $this->validate($this->rulesWarga());
+
+        $warga = Warga::where('nik', $this->nikWarga)->first();
+        if (!$warga) {
+            $warga = new Warga();
+        }
+
+        $warga->nik = $this->nikWarga;
+        $warga->nama = $this->namaWarga;
+        $warga->alamat_domisili = $this->alamatDomisili;
+        $warga->lingkungan_domisili = $this->lingkunganDomisili;
+        if ($this->jenisLayananId == 6) {
+            $warga->alamat_asal = $this->alamatAsal;
+            $warga->tempat_lahir = $this->tempatLahir;
+            $warga->tanggal_lahir = $this->tanggalLahir;
+            $warga->jenis_kelamin = $this->jenisKelamin;
+            $warga->agama = $this->agama;
+            $warga->pendidikan_terakhir = $this->pendidikanTerakhir;
+            $warga->jenis_ktp = $this->jenisKtp;
+            $warga->status_perkawinan = $this->statusPerkawinan;
+            $warga->pekerjaan = $this->pekerjaan;
+            $warga->telp_hp = $this->telpHp;
+            $warga->email = $this->email;
+            $warga->kode_nonpermanen = $this->kodeNonpermanen;
+        }
+        $warga->save();
+
+        return $warga;
+    }
+
     public function store()
     {
         $rulesWarga = $this->rulesWarga();
         $this->validate($rulesWarga);
 
-        $warga = Warga::where('nik', $this->nikWarga)->first();
-        if (!$warga) {
-            $warga = Warga::create([
-                'nik' => $this->nikWarga,
-                'nama' => $this->namaWarga,
-                'alamat_domisili' => $this->alamatDomisili,     
-                'lingkungan_domisili' => $this->lingkunganDomisili,
-                'alamat_asal' => $this->alamatAsal,
-                'tempat_lahir' => $this->tempatLahir,
-                'tanggal_lahir' => $this->tanggalLahir,
-                'jenis_kelamin' => $this->jenisKelamin,
-                'agama' => $this->agama,
-                'pendidikan_terakhir' => $this->pendidikanTerakhir,
-                'jenis_ktp' => $this->jenisKtp,
-                'status_perkawinan' => $this->statusPerkawinan,
-                'pekerjaan' => $this->pekerjaan,
-                'telp_hp' => $this->telpHp,
-                'email' => $this->email,
-                'kode_nonpermanen' => $this->kodeNonpermanen,
-            ]);
-        }else{
-            $warga->update([
-                'nama' => $this->namaWarga,
-                'alamat_domisili' => $this->alamatDomisili,
-                'lingkungan_domisili' => $this->lingkunganDomisili,
-                'alamat_asal' => $this->alamatAsal,
-                'tempat_lahir' => $this->tempatLahir,
-                'tanggal_lahir' => $this->tanggalLahir,
-                'jenis_kelamin' => $this->jenisKelamin,
-                'agama' => $this->agama,
-                'pendidikan_terakhir' => $this->pendidikanTerakhir,
-                'jenis_ktp' => $this->jenisKtp,
-                'status_perkawinan' => $this->statusPerkawinan,
-                'pekerjaan' => $this->pekerjaan,
-                'telp_hp' => $this->telpHp,
-                'email' => $this->email,
-                'kode_nonpermanen' => $this->kodeNonpermanen,
-            ]);
-        }
+        $warga = $this->saveDataWarga();
 
         $layanan = new Layanan();
         $layanan->jenis_layanan_id = $this->jenisLayananId;
@@ -216,12 +210,12 @@ class LayanansByJenis extends Component
             $this->pekerjaan = $layanan->warga->pekerjaan ?? '';
             $this->telpHp = $layanan->warga->telp_hp ?? '';
             $this->email = $layanan->warga->email ?? '';
+            $this->kodeNonpermanen = $layanan->warga->kode_nonpermanen ?? '';
 
-            $this->kodeNonpermanen = $layanan->kode_nonpermanen ?? '';
             $this->kodeArsip = $layanan->kode_arsip;
             $this->hasilPelayanan = $layanan->hasil_pelayanan;
             $this->keterangan = $layanan->keterangan;
-            
+
             $this->showForm = true;
             $this->isEditing = true;
         } else {
@@ -234,14 +228,16 @@ class LayanansByJenis extends Component
         $rulesWarga = $this->rulesWarga();
         $this->validate($rulesWarga);
 
+        $warga = $this->saveDataWarga();
+        
         $layanan = Layanan::find($this->layananId);
         if ($layanan) {
-            $layanan->update([
-                'nik_warga' => $this->nikWarga,
-                'nama_warga' => $this->namaWarga,
-                'alamat_domisili' => $this->alamatDomisili,
-                'lingkungan_domisili' => $this->lingkunganDomisili,
-            ]);
+            $layanan->jenis_layanan_id = $this->jenisLayananId;
+            $layanan->warga_id = $warga->id;
+            $layanan->kode_arsip = $this->kodeArsip;
+            $layanan->hasil_pelayanan = $this->hasilPelayanan;
+            $layanan->keterangan = $this->keterangan;   
+            $layanan->save();
 
             session()->flash('message', 'Layanan updated successfully.');
             $this->resetForm();
