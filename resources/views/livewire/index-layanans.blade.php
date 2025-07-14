@@ -20,7 +20,7 @@
             @if($jenisLayananParent->children->isEmpty())
                 <p class="text-gray-500">Tidak ada sub jenis layanan.</p>
             @else
-                <div class="grid grid-cols-4 gap-4">
+                <div class="grid grid-cols-3 gap-4">
                 @foreach($jenisLayananParent->children as $jenisLayanan)
                     <a href="{{ route('layanans.by-jenis', ['id'=>$jenisLayanan->id]) }}" class="mb-4 p-4 bg-gray-200 rounded-lg">
                         <h3 class="text-md font-semibold">{{ $jenisLayanan->nama_jenis_layanan }}</h3>

@@ -21,4 +21,9 @@ class Layanan extends Model
     {
         return $this->belongsTo(JenisLayanan::class, 'jenis_layanan_id');
     }
+
+    public function warga()
+    {
+        return $this->belongsTo(Warga::class, 'warga_id');
+    }
 }

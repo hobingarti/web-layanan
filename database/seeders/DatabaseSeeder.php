@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
 
         (new JenisLayananSeeder)->run();
         (new LayananSeeder)->run();
+        (new WargaSeeder)->run();
     }
 }

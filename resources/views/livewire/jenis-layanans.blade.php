@@ -31,17 +31,20 @@
         </x-slot>
     </x-confirmation-modal>
 
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4 py-6 bg-white shadow-md rounded-lg">
+    <div class="max-w-7xl mx-auto bg-white shadow-md rounded-lg mb-6">
         <div class="">
             @if($showForm)
             <div>
                 <!-- header form -->
-                <div class="flex justify-between mb-6">
+                <div class="flex justify-between border-b border-gray-200 pb-4 sm:px-6 lg:px-8 px-4 py-6">
                     <h2>{{ $isEditing ? 'Update' : 'Create' }} Jenis Layanan</h2>
                 </div>
-                <hr class="h-px my-6 bg-gray-200 border-0 dark:bg-gray-200">
 
-                <form wire:submit.prevent="store" class="mb-4">
+                @if($isEditing)
+                <form wire:submit.prevent="update" class="sm:px-6 lg:px-8 px-4 py-6 bg-gray-100">
+                @else
+                <form wire:submit.prevent="store" class="sm:px-6 lg:px-8 px-4 py-6 bg-gray-100">
+                @endif
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="namaJenisLayanan" class="block text-sm font-medium text-gray-700">Nama Jenis Layanan</label>
@@ -90,7 +93,7 @@
             </div>
             @else
             <!-- header form -->
-            <div class="flex justify-between mb-6">
+            <div class="flex justify-between border-b border-gray-200 pb-4 sm:px-6 lg:px-8 px-4 py-6">
                 <h2>Daftar Jenis Layanan</h2>
                 <div class="flex justify-end">
                     <button class="flex justify-between px-5 py-2 text-sm font-medium bg-sky-500 hover:bg-sky-700 text-white rounded" wire:click="formTambahData">
@@ -99,9 +102,8 @@
                     </button>
                 </div>
             </div>
-            <hr class="h-px my-6 bg-gray-200 border-0 dark:bg-gray-200"> 
 
-            <div>
+            <div class="sm:px-6 lg:px-8 px-4 py-6 bg-gray-100">
                 <!-- datatable -->
                 <table class="min-w-full bg-white border border-gray-200">
                     <thead>
@@ -115,7 +117,7 @@
                     </thead>
                     <tbody>
                         @foreach($jenisLayanans as $jenisLayanan)
-                            <tr>
+                            <tr class="hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-no-wrap">{{ $jenisLayanan->nama_jenis_layanan }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap">{{ $jenisLayanan->icon_jenis_layanan }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap">{{ ($jenisLayanan->parent->nama_jenis_layanan ?? '-') }}</td>
