@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class LayananController extends Controller
 {
+    public function byJenis($id)
+    {
+        return view('layanans.by-jenis', compact('id'));
+    }
     /**
      * Display a listing of the resource.
      */

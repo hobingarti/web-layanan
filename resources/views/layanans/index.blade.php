@@ -1,3 +1,3 @@
 <x-app-layout>
-    @livewire('show-layanans')
+    @livewire('index-layanans')
 </x-app-layout>

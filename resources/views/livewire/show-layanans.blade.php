@@ -1,7 +1,7 @@
 <x-slot name="header">
     <div class="flex justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Services') }} 
+            {{ __('Services') }}
         </h2>
         <div class="flex justify-end text-gray-500">
             <!-- not working, kita akan ganti dengan breadcrumb sajalah -->
