@@ -40,9 +40,9 @@
                 </div>
 
                 @if($isEditing)
-                <form wire:submit.prevent="update" class="sm:px-6 lg:px-8 px-4 py-6 bg-gray-100">
+                <form wire:submit.prevent="update" class="sm:px-6 lg:px-8 px-4 py-6 bg-gray-100" enctype="multipart/form-data">
                 @else
-                <form wire:submit.prevent="store" class="sm:px-6 lg:px-8 px-4 py-6 bg-gray-100">
+                <form wire:submit.prevent="store" class="sm:px-6 lg:px-8 px-4 py-6 bg-gray-100" enctype="multipart/form-data">
                 @endif
                     <h4 class="font-semibold text-lg text-gray-800 mb-4">Data Warga</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-gray-200 pb-4">
@@ -175,13 +175,28 @@
                         </div>
                         <div>
                             <label for="filePendukung" class="block text-sm font-medium text-gray-700">File Pendukung</label>
-                            <input type="file" id="filePendukung" wire:model="filePendukung" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <div class="flex">
+                                <input type="file" id="filePendukung" wire:model="filePendukung" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                @if($filePendukungUploaded)
+                                    <a href="{{ $filePendukungUploaded }}" class="text-sky-500 flex"><x-antdesign-file-text-o class="me-1 h-5 w-5"/><span class="whitespace-nowrap">Download File</span></a>
+                                @endif
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, JPEG, PNG. Max size: 5MB</p>
+                            @if($filePendukung)
+                                <span class="text-xs text-gray-600 mt-1">
+                                    Selected : {{ $filePendukung->getClientOriginalName() }}
+                                </span>
+                            @endif
+
                             @error('filePendukung') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="mt-4 flex justify-end space-x-2">
                         <button type="submit"
-                                class="flex justify-between px-5 py-2 text-sm font-medium bg-sky-500 hover:bg-sky-700 text-white rounded">
+                                class="flex justify-between px-5 py-2 text-sm font-medium bg-sky-500 hover:bg-sky-700 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                                wire:loading.attr="disabled"
+                                wire:target="filePendukung"
+                                >
                             <x-antdesign-save-o class="w-5 h-5 text-white me-2"/>                                
                             {{ $isEditing ? 'Update' : 'Create' }}
                             

@@ -2,8 +2,12 @@
 
 namespace App\Livewire;
 
+use Str;
+use Storage;
+
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 use App\Models\JenisLayanan;
 use App\Models\Layanan;
@@ -12,6 +16,8 @@ use App\Models\Warga;
 class LayanansByJenis extends Component
 {
     use WithPagination;
+    use WithFileUploads;
+
     public $jenisLayananId;
     public $jenisLayanan;
 
@@ -48,11 +54,15 @@ class LayanansByJenis extends Component
     public $telpHp;
     public $email;
     public $kodeNonpermanen;
+    // file pendukung
+    public $filePendukung;
+    public $filePendukungUploaded;
 
     protected $rules = [
         'kodeArsip' => 'required|string|max:255',
         'hasilPelayanan' => 'required|string|max:255',
         'keterangan' => 'nullable|string|max:255',
+        'filePendukung' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120000'
     ];
     
     public function mount($jenisLayananId)
@@ -96,6 +106,12 @@ class LayanansByJenis extends Component
         $this->pekerjaan = '';
         $this->telpHp = '';
         $this->email = '';
+        // bersihkan field untuk form layanan
+        $this->kodeArsip = '';
+        $this->hasilPelayanan = '';
+        $this->keterangan = '';
+        $this->filePendukung = null;
+        $this->filePendukungUploaded = null;
 
         $this->showForm = false;
         $this->isEditing = false;
@@ -175,6 +191,14 @@ class LayanansByJenis extends Component
         $layanan->kode_arsip = $this->kodeArsip;
         $layanan->hasil_pelayanan = $this->hasilPelayanan;
         $layanan->keterangan = $this->keterangan;   
+        // try to save file pendukung if exists, use storeas and get datetime for filename, store it in storage
+        if($this->filePendukung)
+        {
+            $fileName = pathinfo($this->filePendukung->getClientOriginalName(), PATHINFO_FILENAME);
+            $fileName = now()->format('YmdHis') . '-' . Str::slug($fileName). '.' . $this->filePendukung->getClientOriginalExtension();
+            $filePath = $this->filePendukung->storeAs('file_pendukung', $fileName, 'public');
+            $layanan->file_pendukung = $filePath;
+        }
         $layanan->save();
 
         // Layanan::create([
@@ -212,9 +236,10 @@ class LayanansByJenis extends Component
             $this->email = $layanan->warga->email ?? '';
             $this->kodeNonpermanen = $layanan->warga->kode_nonpermanen ?? '';
 
-            $this->kodeArsip = $layanan->kode_arsip;
-            $this->hasilPelayanan = $layanan->hasil_pelayanan;
-            $this->keterangan = $layanan->keterangan;
+            $this->kodeArsip = $layanan->kode_arsip ?? '';
+            $this->hasilPelayanan = $layanan->hasil_pelayanan ?? '';
+            $this->keterangan = $layanan->keterangan ?? '';
+            $this->filePendukungUploaded = ($layanan->file_pendukung ?? '') == '' ? '' : Storage::url($layanan->file_pendukung);
 
             $this->showForm = true;
             $this->isEditing = true;
@@ -236,7 +261,15 @@ class LayanansByJenis extends Component
             $layanan->warga_id = $warga->id;
             $layanan->kode_arsip = $this->kodeArsip;
             $layanan->hasil_pelayanan = $this->hasilPelayanan;
-            $layanan->keterangan = $this->keterangan;   
+            $layanan->keterangan = $this->keterangan;
+            if($this->filePendukung)
+            {
+                $fileName = pathinfo($this->filePendukung->getClientOriginalName(), PATHINFO_FILENAME);
+                $fileName = now()->format('YmdHis') . '-' . Str::slug($fileName). '.' . $this->filePendukung->getClientOriginalExtension();
+                $filePath = $this->filePendukung->storeAs('file_pendukung', $fileName, 'public');
+                $layanan->file_pendukung = $filePath;
+            }
+               
             $layanan->save();
 
             session()->flash('message', 'Layanan updated successfully.');
