@@ -28,6 +28,27 @@ class LayanansByJenis extends Component
     public $alertMessage = '';
     public $number = 0;
 
+    // search component
+    public $searchKey = '';
+    public $months = [
+        '01' => 'Januari',
+        '02' => 'Februari',
+        '03' => 'Maret',
+        '04' => 'April',
+        '05' => 'Mei',
+        '06' => 'Juni',
+        '07' => 'Juli',
+        '08' => 'Agustus',
+        '09' => 'September',
+        '10' => 'Oktober',
+        '11' => 'November',
+        '12' => 'Desember'
+    ];
+
+    public $years = [];
+    public $searchMonth = '';
+    public $searchYear = '';
+
     // untuk wadah form data layanan
     public $layananId;
     public $jenisLayanans;
@@ -54,6 +75,7 @@ class LayanansByJenis extends Component
     public $telpHp;
     public $email;
     public $kodeNonpermanen;
+    public $tanggalKedatangan;
     // file pendukung
     public $filePendukung;
     public $filePendukungUploaded;
@@ -72,13 +94,38 @@ class LayanansByJenis extends Component
         if (!$this->jenisLayanan) {
             abort(404, 'Jenis Layanan not found');
         }
+
+        $this->years = range(date('Y'), date('Y') - 10);
+        // $this->searchMonth = date('m');
+        $this->searchYear = date('Y');
     }
 
     public function render()
     {
+        $layanans = Layanan::where('jenis_layanan_id', $this->jenisLayananId)
+            ->when($this->searchKey, function ($query) {
+                return $query->where(function ($q) {
+                    $q->where('kode_arsip', 'like', '%' . $this->searchKey . '%')
+                        ->orWhere('hasil_pelayanan', 'like', '%' . $this->searchKey . '%')
+                        ->orWhereHas('warga', function ($q) {
+                            $q->where('nik', 'like', '%' . $this->searchKey . '%')
+                                ->orWhere('nama', 'like', '%' . $this->searchKey . '%');
+                        });
+                });
+            })
+            ->when($this->searchMonth, function ($query) {
+                return $query->whereMonth('created_at', $this->searchMonth);
+            })
+            ->when($this->searchYear, function ($query) {
+                return $query->whereYear('created_at', $this->searchYear);
+            })
+            ->with(['warga'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return view('livewire.layanans-by-jenis', [
             'jenisLayanan' => $this->jenisLayanan,
-            'layanans' => Layanan::where('jenis_layanan_id', $this->jenisLayananId)->with('jenisLayanan')->paginate(10)
+            'layanans' => $layanans
         ]);
     }
 
@@ -106,6 +153,7 @@ class LayanansByJenis extends Component
         $this->pekerjaan = '';
         $this->telpHp = '';
         $this->email = '';
+        $this->tanggalKedatangan = '';
         // bersihkan field untuk form layanan
         $this->kodeArsip = '';
         $this->hasilPelayanan = '';
@@ -139,6 +187,7 @@ class LayanansByJenis extends Component
             $rulesWarga['telpHp'] = 'required|string|max:20';
             $rulesWarga['email'] = 'nullable|email|max:255';
             $rulesWarga['kodeNonpermanen'] = 'required|string|max:255';
+            $rulesWarga['tanggalKedatangan'] = 'required|date';
         }
 
         $rulesWarga = array_merge($rulesWarga, $this->rules);
@@ -172,6 +221,7 @@ class LayanansByJenis extends Component
             $warga->telp_hp = $this->telpHp;
             $warga->email = $this->email;
             $warga->kode_nonpermanen = $this->kodeNonpermanen;
+            $warga->tanggal_kedatangan = $this->tanggalKedatangan;
         }
         $warga->save();
 
@@ -235,6 +285,7 @@ class LayanansByJenis extends Component
             $this->telpHp = $layanan->warga->telp_hp ?? '';
             $this->email = $layanan->warga->email ?? '';
             $this->kodeNonpermanen = $layanan->warga->kode_nonpermanen ?? '';
+            $this->tanggalKedatangan = $layanan->warga->tanggal_kedatangan ?? '';
 
             $this->kodeArsip = $layanan->kode_arsip ?? '';
             $this->hasilPelayanan = $layanan->hasil_pelayanan ?? '';

@@ -1,6 +1,5 @@
 <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
     <div class="flex justify-center items-center">
-        
         <h1 class="mt-8 text-3xl font-medium text-gray-900">
             Selamat Datang di Aplikasi Layanan Kelurahan
         </h1>
@@ -37,7 +36,5 @@
                 </svg>
             </a>
         </p>
-    </div>
-
-    
+    </div>    
 </div>

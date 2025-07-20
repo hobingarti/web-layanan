@@ -22,9 +22,14 @@
             @else
                 <div class="grid grid-cols-3 gap-4">
                 @foreach($jenisLayananParent->children as $jenisLayanan)
-                    <a href="{{ route('layanans.by-jenis', ['id'=>$jenisLayanan->id]) }}" class="mb-4 p-4 bg-gray-200 rounded-lg">
-                        <h3 class="text-md font-semibold">{{ $jenisLayanan->nama_jenis_layanan }}</h3>
-                        <p class="text-sm text-gray-600">Parent ID: {{ $jenisLayanan->parent_id }}</p>
+                    <a href="{{ route('layanans.by-jenis', ['id'=>$jenisLayanan->id]) }}" class="mb-4 p-4 bg-violet-500 rounded-lg hover:bg-violet-700 text-white transition-colors duration-200 flex justify-between items-center">
+                        <div>
+                            <h3 class="text-md font-semibold">{{ $jenisLayanan->nama_jenis_layanan }}</h3>
+                            <p class="text-sm text-white">Layanan: {{ $jenisLayanan->layanans->count() }}</p>
+                        </div>
+                        <div>
+                            <x-antdesign-mail-o class="text-white w-10 h-10"/>
+                        </div>
                     </a>
                 @endforeach
                 </div>

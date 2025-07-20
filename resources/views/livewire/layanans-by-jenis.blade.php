@@ -71,6 +71,11 @@
                     <h4 class="font-semibold text-lg text-gray-800 mt-6 mb-4">Detail Warga Pendatang</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-gray-200 pb-4">
                         <div>
+                            <label for="tanggalKedatangan" class="block text-sm font-medium text-gray-700">Tanggal Kedatangan</label>
+                            <input type="date" id="tanggalKedatangan" wire:model="tanggalKedatangan" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            @error('tanggalKedatangan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
                             <label for="alamatAsal" class="block text-sm font-medium text-gray-700">Alamat Asal</label>
                             <input type="text" id="alamatAsal" wire:model="alamatAsal" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             @error('alamatAsal') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
@@ -178,7 +183,7 @@
                             <div class="flex">
                                 <input type="file" id="filePendukung" wire:model="filePendukung" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 @if($filePendukungUploaded)
-                                    <a href="{{ $filePendukungUploaded }}" class="text-sky-500 flex"><x-antdesign-file-text-o class="me-1 h-5 w-5"/><span class="whitespace-nowrap">Download File</span></a>
+                                    <a href="{{ $filePendukungUploaded }}" target="_blank" class="text-sky-500 flex"><x-antdesign-file-text-o class="me-1 h-5 w-5"/><span class="whitespace-nowrap">Download File</span></a>
                                 @endif
                             </div>
                             <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, JPEG, PNG. Max size: 5MB</p>
@@ -212,11 +217,41 @@
             @else
             <!-- header form -->
             <div class="flex justify-between border-b border-gray-200 sm:px-6 lg:px-8 px-4 py-6">
-                <h2>Daftar Layanan : {{ $jenisLayanan->nama_jenis_layanan }}</h2>
-                <div class="flex justify-end">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- search data with select year and month and params -->
+                    <div>
+                        <label for="searchKey" class="block text-sm font-medium text-gray-700">Cari</label>
+                        <input type="text" id="searchKey" wire:model.live.debounce.500ms="searchKey" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        {{ $searchKey }}
+                    </div>
+                    <div>
+                        <label for="searchMonth" class="block text-sm font-medium text-gray-700">Bulan</label>
+                        <select id="searchMonth" wire:model.live="searchMonth"  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">-- Semua --</option>
+                            @foreach($months as $key => $month)
+                                <option value="{{ $key }}">{{ $month }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="searchYear" class="block text-sm font-medium text-gray-700">Tahun</label>
+                        <select id="searchYear" wire:model.live="searchYear" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            @foreach($years as $year)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end  items-start space-x-2">
+                    <a target="_blank" href="{{ url('layanans/export/' . $jenisLayananId . '/year/' . $searchYear . '/month/' . ($searchMonth == '' ? 'all' : $searchMonth)) }}" 
+                        
+                        class="flex justify-between px-5 py-2 text-sm font-medium bg-green-500 hover:bg-green-700 text-white rounded me-1">
+                        <x-iconpark-excel class="w-5 h-5 text-white me-2"/>
+                        Export
+                    </a>
                     <button class="flex justify-between px-5 py-2 text-sm font-medium bg-sky-500 hover:bg-sky-700 text-white rounded" wire:click="formTambahData">
-                        <x-heroicon-s-plus class="w-5 h-5 text-white me-2"/>
-                        Tambah Data
+                        <x-iconpark-excel-o class="w-5 h-5 text-white me-2"/>
+                        Tambah
                     </button>
                 </div>
             </div>
