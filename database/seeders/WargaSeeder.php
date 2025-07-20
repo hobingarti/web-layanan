@@ -16,13 +16,13 @@ class WargaSeeder extends Seeder
         //
         Warga::truncate(); // Clear existing data
 
-        for ($i = 1; $i <= 20; $i++) {
-            Warga::create([
-                'nik' => str_pad($i, 16, '0', STR_PAD_LEFT),
-                'nama' => "Warga $i",
-                'alamat_domisili' => "Alamat $i",
-                'lingkungan_domisili' => "Lingkungan $i"
-            ]);
-        }
+        // for ($i = 1; $i <= 20; $i++) {
+        //     Warga::create([
+        //         'nik' => str_pad($i, 16, '0', STR_PAD_LEFT),
+        //         'nama' => "Warga $i",
+        //         'alamat_domisili' => "Alamat $i",
+        //         'lingkungan_domisili' => "Lingkungan $i"
+        //     ]);
+        // }
     }
 }

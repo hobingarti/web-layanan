@@ -65,15 +65,15 @@ class JenisLayananSeeder extends Seeder
         ]);
 
         // create 10 more jenis layanan
-        for ($i = 3; $i <= 12; $i++) {
-            JenisLayanan::create([
-                'nama_jenis_layanan' => 'Jenis Layanan ' . $i,
-                'icon_jenis_layanan' => 'icon-child',
-                'keterangan' => 'Layanan jenis layanan ' . $i,
-                'is_aktif' => true,
-                'parent_id' => 2, // Parent is "Layanan Non Perizinan"
-            ]);
-        }
+        // for ($i = 3; $i <= 12; $i++) {
+        //     JenisLayanan::create([
+        //         'nama_jenis_layanan' => 'Jenis Layanan ' . $i,
+        //         'icon_jenis_layanan' => 'icon-child',
+        //         'keterangan' => 'Layanan jenis layanan ' . $i,
+        //         'is_aktif' => true,
+        //         'parent_id' => 2, // Parent is "Layanan Non Perizinan"
+        //     ]);
+        // }
         
 
     }
