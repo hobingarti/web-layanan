@@ -6,7 +6,8 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
+                        <!-- <x-application-mark class="block h-9 w-auto" /> -->
+                        <img src="{{ asset('images/logo-sanur.png') }}" alt="Logo Sanur" class="h-10 w-auto ms-2" />
                     </a>
                 </div>
 

@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 use App\Models\JenisLayanan;
+use File;
 
 class JenisLayanans extends Component
 {
@@ -35,8 +36,18 @@ class JenisLayanans extends Component
 
     public function render()
     {
+        $iconPath = base_path('vendor/codeat3/blade-ant-design-icons/resources/svg');
+        $icons = collect(File::allFiles($iconPath))
+            ->map(fn($file) => $file->getFilenameWithoutExtension())
+            ->sort()
+            ->values()
+            ->toArray();
+
+        // dd($icons);
+
         return view('livewire.jenis-layanans', [
-            'jenisLayanans' => JenisLayanan::with('parent')->paginate(10)
+            'jenisLayanans' => JenisLayanan::with('parent')->paginate(10),
+            'icons' => $icons
         ]);
     }
 

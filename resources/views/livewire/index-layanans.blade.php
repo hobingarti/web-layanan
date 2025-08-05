@@ -28,7 +28,7 @@
                             <p class="text-sm text-white">Layanan: {{ $jenisLayanan->layanans->count() }}</p>
                         </div>
                         <div>
-                            <x-antdesign-mail-o class="text-white w-10 h-10"/>
+                            <x-dynamic-component :component="'antdesign-' . $jenisLayanan->icon_jenis_layanan" class="w-10 h-10 text-white"/>
                         </div>
                     </a>
                 @endforeach

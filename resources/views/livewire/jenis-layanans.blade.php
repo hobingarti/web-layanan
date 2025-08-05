@@ -62,8 +62,13 @@
                             @error('parentId') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                         <div>
-                            <label for="iconJenisLayanan" class="block text-sm font-medium text-gray-700">Icon Jenis Layanan</label>
-                            <input type="text" id="iconJenisLayanan" wire:model="iconJenisLayanan" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <label for="iconJenisLayanan" class="block text-sm font-medium text-gray-700 flex">Icon Jenis Layanan</label>
+                            <select id="iconJenisLayanan" wire:model.live="iconJenisLayanan"  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Pilih Icon</option>
+                                @foreach($icons as $icon)
+                                    <option value="{{ $icon }}" {{ $icon === $iconJenisLayanan ? 'selected' : '' }}>{{ $icon }}</option>
+                                @endforeach
+                            </select>
                             @error('iconJenisLayanan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                         <div>
@@ -96,6 +101,12 @@
             <div class="flex justify-between border-b border-gray-200 pb-4 sm:px-6 lg:px-8 px-4 py-6">
                 <h2>Daftar Jenis Layanan</h2>
                 <div class="flex justify-end">
+                    <a href="https://docs.google.com/document/d/1A6n9TprBqWwQoJEdThb5qYHqUIDwZWmofNV4dpXrE3I/edit?tab=t.f2zs32rvse0a" 
+                        target="_blank" class="flex justify-between px-2 py-2 text-sm font-medium bg-indigo-500 hover:bg-indigo-700 text-white rounded me-1" 
+                        title="help">
+                        <x-antdesign-question-o class="w-5 h-5 text-white"/>
+                        Help
+                    </a>
                     <button class="flex justify-between px-5 py-2 text-sm font-medium bg-sky-500 hover:bg-sky-700 text-white rounded" wire:click="formTambahData">
                         <x-heroicon-s-plus class="w-5 h-5 text-white me-2"/>
                         Tambah Data
