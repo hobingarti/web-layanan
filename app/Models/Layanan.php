@@ -26,4 +26,24 @@ class Layanan extends Model
     {
         return $this->belongsTo(Warga::class, 'warga_id');
     }
+
+    public function newKodeArsip()
+    {
+        $lastLayanan = Layanan::where(DB::raw('YEAR(created_at)'), date('Y'))
+            ->orderBy('created_at', 'desc')
+            ->first();
+        if ($lastLayanan) {
+            $lastNumber = (int)explode('/', $lastLayanan->kode_arsip)[1];
+            $newNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '00001';
+        }
+
+        return '100'.'/'.$newNumber.'/VII'.'/'.date('Y');
+    }
+
+    public function assignKodeArsip()
+    {
+        $this->kode_arsip = $this->newKodeArsip();
+    }
 }

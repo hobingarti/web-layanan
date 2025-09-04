@@ -249,6 +249,7 @@ class LayanansByJenis extends Component
             $filePath = $this->filePendukung->storeAs('file_pendukung', $fileName, 'public');
             $layanan->file_pendukung = $filePath;
         }
+        $layanan->assignKodeArsip();
         $layanan->save();
 
         // Layanan::create([
