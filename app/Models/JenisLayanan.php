@@ -12,6 +12,7 @@ class JenisLayanan extends Model
     protected $fillable = [
         'parent_id',
         'nama_jenis_layanan',
+        'kode',
         'icon_jenis_layanan',
         'keterangan',
         'is_aktif',

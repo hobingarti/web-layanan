@@ -21,6 +21,7 @@ class JenisLayanans extends Component
     // untuk wadah form data
     public $jenisLayananId;
     public $namaJenisLayanan;
+    public $kode;
     public $iconJenisLayanan;
     public $keterangan;
     public $isAktif = true;
@@ -28,6 +29,7 @@ class JenisLayanans extends Component
 
     protected $rules = [
         'namaJenisLayanan' => 'required|string|max:255',
+        'kode' => 'required|string|max:255',
         'iconJenisLayanan' => 'nullable|string|max:255',
         'keterangan' => 'nullable|string|max:500',
         'isAktif' => 'boolean',
@@ -63,6 +65,7 @@ class JenisLayanans extends Component
         $this->reset([
             'jenisLayananId',
             'namaJenisLayanan',
+            'kode',
             'iconJenisLayanan',
             'keterangan',
             'isAktif',
@@ -78,6 +81,7 @@ class JenisLayanans extends Component
 
         JenisLayanan::create([
             'nama_jenis_layanan' => $this->namaJenisLayanan,
+            'kode' => $this->kode,
             'icon_jenis_layanan' => $this->iconJenisLayanan,
             'keterangan' => $this->keterangan,
             'is_aktif' => $this->isAktif,
@@ -93,6 +97,7 @@ class JenisLayanans extends Component
         $jenisLayanan = JenisLayanan::findOrFail($id);
         $this->jenisLayananId = $jenisLayanan->id;
         $this->namaJenisLayanan = $jenisLayanan->nama_jenis_layanan;
+        $this->kode = $jenisLayanan->kode;
         $this->iconJenisLayanan = $jenisLayanan->icon_jenis_layanan;
         $this->keterangan = $jenisLayanan->keterangan;
         $this->isAktif = $jenisLayanan->is_aktif;
@@ -109,6 +114,7 @@ class JenisLayanans extends Component
         $jenisLayanan = JenisLayanan::findOrFail($this->jenisLayananId);
         $jenisLayanan->update([
             'nama_jenis_layanan' => $this->namaJenisLayanan,
+            'kode' => $this->kode,
             'icon_jenis_layanan' => $this->iconJenisLayanan,
             'keterangan' => $this->keterangan,
             'is_aktif' => $this->isAktif,

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\JenisLayanan;
 
 class Layanan extends Model
 {
@@ -27,23 +28,43 @@ class Layanan extends Model
         return $this->belongsTo(Warga::class, 'warga_id');
     }
 
-    public function newKodeArsip()
+    public function monthKodeArsip($month)
     {
-        $lastLayanan = Layanan::where(DB::raw('YEAR(created_at)'), date('Y'))
-            ->orderBy('created_at', 'desc')
-            ->first();
-        if ($lastLayanan) {
-            $lastNumber = (int)explode('/', $lastLayanan->kode_arsip)[1];
-            $newNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
-        } else {
-            $newNumber = '00001';
-        }
+        $months = [
+            1 => 'I',
+            2 => 'II',
+            3 => 'III',
+            4 => 'IV',
+            5 => 'V',
+            6 => 'VI',
+            7 => 'VII',
+            8 => 'VIII',
+            9 => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII'
+        ];
 
-        return '100'.'/'.$newNumber.'/VII'.'/'.date('Y');
+        return $months[$month] ?? '';
     }
 
     public function assignKodeArsip()
     {
-        $this->kode_arsip = $this->newKodeArsip();
+        // create new year and nomor based on last record
+        $year = date('Y');
+        $month = $this->monthKodeArsip(date('n'));
+        $lastLayanan = Layanan::where('tahun', $year)->orderBy('nomor', 'desc')->first();
+        if ($lastLayanan) {
+            $newNomor = $lastLayanan->nomor + 1;
+        } else {
+            $newNomor = 1;
+        }
+
+        $jenisLayanan = JenisLayanan::find($this->jenis_layanan_id);
+        $kodeJenisLayanan = $jenisLayanan ? $jenisLayanan->kode : 100; // Default kode if not found
+
+        $this->tahun = $year;
+        $this->nomor = $newNomor;
+        $this->kode_arsip = $kodeJenisLayanan.'/'.str_pad($newNomor, 3, '0', STR_PAD_LEFT).'/'.$month.'/'.$year;
     }
 }

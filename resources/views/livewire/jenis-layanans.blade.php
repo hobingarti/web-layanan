@@ -52,6 +52,11 @@
                             @error('namaJenisLayanan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                         <div>
+                            <label for="kode" class="block text-sm font-medium text-gray-700">Kode Jenis Layanan</label>
+                            <input type="text" id="kode" wire:model="kode" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            @error('kode') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
                             <label for="parentId" class="block text-sm font-medium text-gray-700">Parent Jenis Layanan</label>
                             <select id="parentId" wire:model="parentId" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="0">Buat Sebagai Parent</option>
@@ -72,8 +77,10 @@
                             @error('iconJenisLayanan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                         <div>
-                            <label for="isAktif" class="block text-sm font-medium text-gray-700">Aktif</label>
+                            <label for="isAktif" class="block text-sm font-medium text-gray-700">Status</label>
                             <input type="checkbox" id="isAktif" wire:model="isAktif" class="mt-1">
+                            <label for="isAktif" class="ms-2 text-sm font-medium text-gray-700">Set Aktif</label>
+                            
                         </div>
                         <div>
                             <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>

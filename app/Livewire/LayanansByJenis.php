@@ -240,7 +240,7 @@ class LayanansByJenis extends Component
         $layanan->warga_id = $warga->id;
         $layanan->kode_arsip = $this->kodeArsip;
         $layanan->hasil_pelayanan = $this->hasilPelayanan;
-        $layanan->keterangan = $this->keterangan;   
+        $layanan->keterangan = $this->keterangan;
         // try to save file pendukung if exists, use storeas and get datetime for filename, store it in storage
         if($this->filePendukung)
         {
