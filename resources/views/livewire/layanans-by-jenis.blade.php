@@ -165,7 +165,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-gray-200 pb-4">
                         <div>
                             <label for="kodeArsip" class="block text-sm font-medium text-gray-700">Kode Arsip</label>
-                            <input type="text" id="kodeArsip" wire:model="kodeArsip" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" id="kodeArsip" wire:model="kodeArsip" placeholder="Kode Arsip akan diberikan saat Create" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 cursor-not-allowed" readonly>
                             @error('kodeArsip') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                         <div>

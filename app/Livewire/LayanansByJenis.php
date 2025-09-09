@@ -81,7 +81,7 @@ class LayanansByJenis extends Component
     public $filePendukungUploaded;
 
     protected $rules = [
-        'kodeArsip' => 'required|string|max:255',
+        'kodeArsip' => 'string|max:255',
         'hasilPelayanan' => 'required|string|max:255',
         'keterangan' => 'nullable|string|max:255',
         'filePendukung' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120000'
