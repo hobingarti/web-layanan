@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\JenisLayananSeeder;
+use Database\Seeders\FormModelSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,8 +22,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        (new JenisLayananSeeder)->run();
-        (new LayananSeeder)->run();
-        (new WargaSeeder)->run();
+        // (new JenisLayananSeeder)->run();
+        // (new LayananSeeder)->run();
+        // (new WargaSeeder)->run();
+        (new LingkunganSeeder)->run();
+        (new FormModelSeeder)->run();
     }
 }
